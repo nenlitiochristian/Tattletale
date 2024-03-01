@@ -3,6 +3,7 @@ import App from '../App';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import RequireAuth from '../middlewares/RequireAuth';
+import NotFound from '../pages/NotFound';
 
 export const router = createBrowserRouter([
     {
@@ -10,7 +11,8 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: "", element: <RequireAuth><HomePage></HomePage></RequireAuth> },
-            { path: "/login", element: <LoginPage /> }
+            { path: "/login", element: <LoginPage /> },
+            { path: "*", element: <NotFound /> }
         ]
     }
 ]);
