@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 type Props = {}
 
-const NotFound = (props: Props) => {
+const NotFound = ({ }: Props) => {
     return (
         <div className='flex items-center justify-center w-full h-full text-black dark:text-white'>
             <div className='flex flex-col gap-2 items-center justify-center p-12 bg-slate-500  dark:bg-slate-800 text-base rounded-lg'>

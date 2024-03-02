@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useContext } from "react";
 
 type DarkModeContextType = {
     isDarkMode: boolean,

@@ -5,7 +5,7 @@ import { auth } from '../firebase';
 
 type Props = {}
 
-const LoginPage = (props: Props) => {
+const LoginPage = ({ }: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
@@ -13,7 +13,7 @@ const LoginPage = (props: Props) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const email = username + "@example.dummy";
+        const email = (username + "@example.dummy").toLowerCase();
         signInWithEmailAndPassword(auth, email, password)
             .then(() => { navigate('/') })
             .catch(() => { setError(true) });
