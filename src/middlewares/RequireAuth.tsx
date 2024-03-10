@@ -8,7 +8,7 @@ type Props = {
 }
 
 const RequireAuth = ({ children }: Props) => {
-    const [user, setUser] = useState<User | null>();
+    const [user, setUser] = useState<User | null>(auth.currentUser);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
