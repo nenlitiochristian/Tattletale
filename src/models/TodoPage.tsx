@@ -1,6 +1,4 @@
-export type TodoCheckedState = {
-    checked: 0 | 0.5 | 1
-}
+export type TodoCheckedState = 0 | 0.5 | 1
 
 export type Todo = {
     content: string;
