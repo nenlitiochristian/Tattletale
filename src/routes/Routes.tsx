@@ -5,7 +5,6 @@ import LoginPage from '../pages/LoginPage';
 import RequireAuth from '../middlewares/RequireAuth';
 import NotFound from '../pages/NotFound';
 import TodoPage from '../pages/TodoPage';
-import TumbalTodo from '../pages/TumbalTodo';
 
 export const router = createBrowserRouter([
     {
@@ -15,7 +14,7 @@ export const router = createBrowserRouter([
             { path: "", element: <RequireAuth><HomePage></HomePage></RequireAuth> },
             { path: "login", element: <LoginPage /> },
             { path: "pages/:pageId", element: <RequireAuth><TodoPage /></RequireAuth> },
-            { path: "*", element: <TumbalTodo /> }
+            { path: "*", element: <NotFound /> }
         ]
     }
 ]);
