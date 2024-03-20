@@ -1,10 +1,10 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiCircle, PiCircleFill, PiCircleHalfFill } from 'react-icons/pi';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
 import ContentEditable from 'react-contenteditable';
@@ -148,6 +148,8 @@ const Header = ({ todo, notifyChange }: { todo: TodoPage, notifyChange: () => vo
         setEditMode(!isEditMode);
     }
 
+    const navigate = useNavigate();
+
     const sanitizeConf = {
         allowedTags: ["b", "i"],
     };
@@ -199,6 +201,8 @@ const Header = ({ todo, notifyChange }: { todo: TodoPage, notifyChange: () => vo
                     </button>
                     <button onClick={() => {
                         // TODO
+                        deleteDoc(doc(db, 'pages', todo.id));
+                        navigate('/');
                     }} className='text-red-500 text-lg underline'>
                         Delete
                     </button>
