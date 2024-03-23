@@ -4,13 +4,14 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { TodoPage } from "../models/TodoPage";
+import { useAuth } from "../middlewares/RequireAuth";
 
 const HomePage = () => {
     const [showCreatePopup, setShowCreatePopup] = useState(false);
     const [newPageTitle, setNewPageTitle] = useState('');
     const [pages, setPages] = useState<TodoPage[]>([]);
     const navigate = useNavigate();
-    const user = auth.currentUser;
+    const { user } = useAuth();
 
     const logout = () => {
         signOut(auth).then(() => { navigate('/login') }).catch();
@@ -56,7 +57,7 @@ const HomePage = () => {
                     <h2 className="text-sky-500 text-2xl lg:text-3xl font-semibold">TPA To-do List</h2>
                 </div>
                 <div className="ml-auto my-auto flex flex-col text-white text-xl lg:text-2xl font-semibold">
-                    <p className="ml-auto">Welcome, {initial}</p>
+                    <Link to='/account' className="ml-auto">Welcome, {initial}</Link>
                     <button onClick={logout} className="ml-auto bg-sky-500 py-1 px-3 my-2 rounded-md">Logout</button>
                 </div>
             </nav>

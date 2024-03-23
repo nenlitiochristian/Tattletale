@@ -7,6 +7,7 @@ import NotFound from '../pages/NotFound';
 import TodoPage from '../pages/TodoPage';
 import EditTodoPage from '../pages/EditTodoPage';
 import ViewTemplatePage from '../pages/ViewTemplatePage';
+import AccountPage from '../pages/AccountPage';
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
             { path: "pages/:pageId/edit", element: <RequireAuth><EditTodoPage /></RequireAuth> },
             { path: "pages/:pageId", element: <RequireAuth><TodoPage /></RequireAuth> },
             { path: "templates/:templateId", element: <RequireAuth><ViewTemplatePage /></RequireAuth> },
+            { path: "account", element: <RequireAuth><AccountPage /></RequireAuth> },
             { path: "*", element: <NotFound /> }
         ]
     }

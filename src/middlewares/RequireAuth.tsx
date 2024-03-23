@@ -1,11 +1,26 @@
 import { User, onAuthStateChanged } from 'firebase/auth';
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
     children: React.ReactNode
 }
+
+type AuthContextType = {
+    user: User,
+    setUser: (user: User) => void,
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useCurrentFocusContext must be used within a BooleanProvider');
+    }
+    return context;
+};
 
 const RequireAuth = ({ children }: Props) => {
     const [user, setUser] = useState<User | null>(auth.currentUser);
@@ -20,6 +35,12 @@ const RequireAuth = ({ children }: Props) => {
 
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/login');
+        }
+    }, [loading, user, navigate]);
 
     if (loading) {
         return (
@@ -36,11 +57,12 @@ const RequireAuth = ({ children }: Props) => {
     }
 
     if (!user) {
-        navigate('/login');
-        return null;
+        return <></>;
     }
 
-    return <>{children}</>;
+    return <AuthContext.Provider value={{ user, setUser }}>
+        {children}
+    </AuthContext.Provider>;
 }
 
 export default RequireAuth

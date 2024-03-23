@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiCircle, PiCircleFill, PiCircleHalfFill } from 'react-icons/pi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
 import NotFound from './NotFound';
+import { useAuth } from '../middlewares/RequireAuth';
 
 const TodoPage = () => {
     const [loading, setLoading] = useState(true);
     const [todo, setTodo] = useState<null | TodoPage>(null);
-    const [user, setUser] = useState<null | User>(auth.currentUser);
+    const { user } = useAuth();
     const { pageId } = useParams();
 
     const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
@@ -66,11 +67,6 @@ const TodoPage = () => {
             content: '',
             collapsed: false,
         })
-    }
-
-    if (!user) {
-        setUser(auth.currentUser);
-        return <></>
     }
 
     return (
@@ -216,6 +212,12 @@ const Todo = ({ node, notifyChange }: { node: TodoNode, notifyChange: () => void
     const isTodo = ('checked' in node);
     const textColor = !isTodo ? '' : node.checked === 0 ? 'text-white' : node.checked === 0.5 ? 'text-slate-400' : 'text-slate-400 line-through'
 
+    const sanitizeString = (htmlString: string) => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlString;
+        return tempDiv.textContent || tempDiv.innerText || '';
+    }
+
     return (
         <>
             <div className='flex relative'>
@@ -226,7 +228,7 @@ const Todo = ({ node, notifyChange }: { node: TodoNode, notifyChange: () => void
                     }}><TodoCheckButton value={node.checked} className='size-5' /></button>
                     : <></>}
                 <div className={textColor + ' w-full outline-none bg-slate-900 min-h-6'}>
-                    {node.content}
+                    {sanitizeString(node.content)}
                 </div>
             </div>
             <div className='pl-6'>

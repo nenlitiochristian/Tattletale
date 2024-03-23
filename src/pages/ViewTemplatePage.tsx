@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiCircle, PiCircleFill, PiCircleHalfFill } from 'react-icons/pi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
+import { useAuth } from '../middlewares/RequireAuth';
 import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
 import NotFound from './NotFound';
 
 const ViewTemplatePage = () => {
     const [loading, setLoading] = useState(true);
     const [todo, setTodo] = useState<null | TodoPage>(null);
-    const [user, setUser] = useState<null | User>(auth.currentUser);
+    const { user } = useAuth();
     const { templateId } = useParams();
 
     useEffect(() => {
@@ -34,11 +35,6 @@ const ViewTemplatePage = () => {
 
     if (!todo) {
         return <NotFound />
-    }
-
-    if (!user) {
-        setUser(auth.currentUser);
-        return <></>
     }
 
     return (

@@ -5,12 +5,13 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiCircle, PiCircleFill, PiCircleHalfFill } from 'react-icons/pi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
 import { User } from 'firebase/auth';
 import NotFound from './NotFound';
+import { useAuth } from '../middlewares/RequireAuth';
 
 interface CurrentFocusType {
     currentPos: string;
@@ -40,8 +41,8 @@ const CurrentFocusProvider = ({ children }: { children: React.ReactNode }) => {
 const EditTodoPage = () => {
     const [loading, setLoading] = useState(true);
     const [todo, setTodo] = useState<null | TodoPage>(null);
-    const [user, setUser] = useState<null | User>(auth.currentUser);
     const { pageId } = useParams();
+    const { user } = useAuth();
 
     const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
@@ -96,11 +97,6 @@ const EditTodoPage = () => {
             content: '',
             collapsed: false,
         })
-    }
-
-    if (!user) {
-        setUser(auth.currentUser);
-        return <></>
     }
 
     return (
