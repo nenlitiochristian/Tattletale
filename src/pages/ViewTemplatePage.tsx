@@ -8,6 +8,7 @@ import { db } from '../firebase';
 import { useAuth } from '../middlewares/RequireAuth';
 import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
 import NotFound from './NotFound';
+import sanitizeHtml from 'sanitize-html';
 
 const ViewTemplatePage = () => {
     const [loading, setLoading] = useState(true);
@@ -40,7 +41,7 @@ const ViewTemplatePage = () => {
     return (
         <div className="container mx-auto py-6 px-16 lg:px-64 divide-y-2 font-sans">
             <Header {...{ todo, user }} />
-            <div className='text-lg py-4 text-slate-100'>
+            <div className='text-lg py-4 text-zinc-100'>
                 <TodoNodes content={todo.content} />
             </div>
         </div>
@@ -63,12 +64,16 @@ const Header = ({ todo, user }: { todo: TodoPage, user: User }) => {
 
     todoCounter(todo.content);
 
+    const sanitizeConf = {
+        allowedTags: ["b", "i"],
+    };
+
     return (
         <div className='w-full flex flex-wrap items-center mb-4'>
             <Link to='/' className='flex items-stretch mr-4 aspect-square size-4 lg:size-8'><IoArrowBack className='h-full w-full' /></Link>
             <div className=''>
-                <div className=' w-full outline-none bg-slate-900 text-3xl lg:text-5xl text-white font-bold mb-2'>
-                    {todo.name}
+                <div className=' w-full outline-none bg-zinc-900 text-3xl lg:text-5xl text-white font-bold mb-2'
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(todo.name, sanitizeConf) }}>
                 </div>
                 <div className='w-full flex gap-3'>
                     <button onClick={() => {
@@ -115,14 +120,18 @@ const Todo = ({ node }: { node: TodoNode }) => {
     const isTodo = ('checked' in node);
     const textColor = 'text-white';
 
+    const sanitizeConf = {
+        allowedTags: ["b", "i"],
+    };
+
     return (
         <>
             <div className='flex relative'>
                 {isTodo ?
                     <button className='mr-2 -ml-6'><TodoCheckButton value={0} className='size-5' /></button>
                     : <></>}
-                <div className={textColor + ' w-full outline-none bg-slate-900 min-h-6'}>
-                    {node.content}
+                <div className={textColor + ' w-full outline-none bg-zinc-900 min-h-6'}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(node.content, sanitizeConf) }}>
                 </div>
             </div>
             <div className='pl-6'>

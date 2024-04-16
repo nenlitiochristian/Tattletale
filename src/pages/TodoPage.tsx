@@ -5,13 +5,14 @@ import { IoArrowBack } from 'react-icons/io5';
 import { PiCircle, PiCircleFill, PiCircleHalfFill } from 'react-icons/pi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { db } from '../firebase';
-import { TodoCheckedState, TodoNode, TodoPage } from '../models/TodoPage';
+import { TodoCheckedState, TodoNode, TodoPage as TodoPageType } from '../models/TodoPage';
 import NotFound from './NotFound';
 import { useAuth } from '../middlewares/RequireAuth';
+import sanitizeHtml from 'sanitize-html';
 
 const TodoPage = () => {
     const [loading, setLoading] = useState(true);
-    const [todo, setTodo] = useState<null | TodoPage>(null);
+    const [todo, setTodo] = useState<null | TodoPageType>(null);
     const { user } = useAuth();
     const { pageId } = useParams();
 
@@ -46,7 +47,7 @@ const TodoPage = () => {
             const docRef = doc(db, "pages", id);
             getDoc(docRef).then((docSnap) => {
                 if (docSnap.exists()) {
-                    const todoPage = { id: id, ...docSnap.data() } as TodoPage;
+                    const todoPage = { id: id, ...docSnap.data() } as TodoPageType;
                     setTodo(todoPage);
                 }
             }).finally(() => { setLoading(false) });
@@ -72,14 +73,14 @@ const TodoPage = () => {
     return (
         <div className="container mx-auto py-6 px-16 lg:px-64 divide-y-2 font-sans">
             <Header {...{ todo, user }} />
-            <div className='text-lg py-4 text-slate-100'>
+            <div className='text-lg py-4 text-zinc-100'>
                 <TodoNodes notifyChange={handleChange} content={todo.content} />
             </div>
         </div>
     )
 }
 
-const Header = ({ todo, user }: { todo: TodoPage, user: User }) => {
+const Header = ({ todo, user }: { todo: TodoPageType, user: User }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [showCreateTemplate, setShowCreateTemplate] = useState(false);
     const [templateUrl, setTemplateUrl] = useState('');
@@ -105,11 +106,15 @@ const Header = ({ todo, user }: { todo: TodoPage, user: User }) => {
 
     todoCounter(todo.content);
 
+    const sanitizeConf = {
+        allowedTags: ["b", "i"],
+    };
+
     return (
         <div className='w-full flex flex-wrap items-center mb-4'>
             {showDeleteConfirmation ?
                 <div className='absolute left-0 right-0 top-0 bottom-0 bg-black/50 z-50 flex justify-center items-center text-center'>
-                    <div className='bg-slate-800 p-8 flex flex-col rounded-xl'>
+                    <div className='bg-zinc-800 p-8 flex flex-col rounded-xl'>
                         <p className='text-2xl'>Are you sure you want to delete this page?</p>
                         <p className='text-xl text-red-500'>This action is permanent</p>
                         <div className='flex justify-center gap-3 mt-2'>
@@ -130,7 +135,7 @@ const Header = ({ todo, user }: { todo: TodoPage, user: User }) => {
             }
             {showCreateTemplate ?
                 <div className='absolute left-0 right-0 top-0 bottom-0 bg-black/50 z-50 flex justify-center items-center text-center'>
-                    <div className='bg-slate-800 p-8 flex flex-col rounded-xl'>
+                    <div className='bg-zinc-800 p-8 flex flex-col rounded-xl'>
                         <p className='text-2xl'>Here's the link to your template:</p>
                         <p className='text-xl text-indigo-500'>{templateUrl}</p>
                     </div>
@@ -139,8 +144,8 @@ const Header = ({ todo, user }: { todo: TodoPage, user: User }) => {
             }
             <Link to='/' className='flex items-stretch mr-4 aspect-square size-4 lg:size-8'><IoArrowBack className='h-full w-full' /></Link>
             <div>
-                <div className=' w-full outline-none bg-slate-900 text-3xl lg:text-5xl text-white font-bold mb-2'>
-                    {todo.name}
+                <div className=' w-full outline-none bg-zinc-900 text-3xl lg:text-5xl text-white font-bold mb-2'
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(todo.name, sanitizeConf) }}>
                 </div>
                 <div className=''>
                     <div className='w-full flex gap-3'>
@@ -210,13 +215,11 @@ const AddCheckedState = (value: TodoCheckedState) => {
 
 const Todo = ({ node, notifyChange }: { node: TodoNode, notifyChange: () => void }) => {
     const isTodo = ('checked' in node);
-    const textColor = !isTodo ? '' : node.checked === 0 ? 'text-white' : node.checked === 0.5 ? 'text-slate-400' : 'text-slate-400 line-through'
+    const textColor = !isTodo ? '' : node.checked === 0 ? 'text-white' : node.checked === 0.5 ? 'text-zinc-400' : 'text-zinc-400 line-through'
 
-    const sanitizeString = (htmlString: string) => {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlString;
-        return tempDiv.textContent || tempDiv.innerText || '';
-    }
+    const sanitizeConf = {
+        allowedTags: ["b", "i"],
+    };
 
     return (
         <>
@@ -227,8 +230,8 @@ const Todo = ({ node, notifyChange }: { node: TodoNode, notifyChange: () => void
                         notifyChange();
                     }}><TodoCheckButton value={node.checked} className='size-5' /></button>
                     : <></>}
-                <div className={textColor + ' w-full outline-none bg-slate-900 min-h-6'}>
-                    {sanitizeString(node.content)}
+                <div className={textColor + ' w-full outline-none bg-zinc-900 min-h-6'}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(node.content, sanitizeConf) }}>
                 </div>
             </div>
             <div className='pl-6'>

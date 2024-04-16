@@ -54,19 +54,19 @@ const HomePage = () => {
             <nav className="flex w-full flex-wrap font-bold">
                 <div className="">
                     <h1 className="text-white text-3xl lg:text-5xl mb-2">TattleTaLe</h1>
-                    <h2 className="text-sky-500 text-2xl lg:text-3xl font-semibold">TPA To-do List</h2>
+                    <h2 className="text-indigo-500 text-2xl lg:text-3xl font-semibold">TPA To-do List</h2>
                 </div>
                 <div className="ml-auto my-auto flex flex-col text-white text-xl lg:text-2xl font-semibold">
                     <Link to='/account' className="ml-auto">Welcome, {initial}</Link>
-                    <button onClick={logout} className="ml-auto bg-sky-500 py-1 px-3 my-2 rounded-md">Logout</button>
+                    <button onClick={logout} className="ml-auto bg-indigo-500 py-1 px-3 my-2 rounded-md">Logout</button>
                 </div>
             </nav>
             <div className="w-full my-3 py-3 flex flex-col gap-4">
                 {showCreatePopup ?
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 flex items-center justify-center">
-                        <form className='flex flex-col gap-2 items-center justify-center p-12 bg-slate-500  dark:bg-slate-800 text-base rounded-lg' onSubmit={(e) => { e.preventDefault(); handleCreateNewPage() }}>
+                        <form className='flex flex-col gap-2 items-center justify-center p-12 bg-zinc-500  dark:bg-zinc-800 text-base rounded-lg' onSubmit={(e) => { e.preventDefault(); handleCreateNewPage() }}>
                             <h1 className='text-xl lg:text-3xl text-black dark:text-white mb-2'>Create a new to-do page</h1>
-                            <input type="text" placeholder='To-do page title' className='rounded-md p-1 w-full focus:ring-2 focus:ring-slate-700 dark:focus:ring-slate-500 focus:outline-none text-black bg-slate-200' onChange={(e) => { setNewPageTitle(e.target.value) }} value={newPageTitle}></input>
+                            <input type="text" placeholder='To-do page title' className='rounded-md p-1 w-full focus:ring-2 focus:ring-zinc-700 dark:focus:ring-zinc-500 focus:outline-none text-black bg-zinc-200' onChange={(e) => { setNewPageTitle(e.target.value) }} value={newPageTitle}></input>
                             <div className="w-full mt-2 flex">
                                 <button type='submit' className='bg-indigo-500 py-0.5 mx-1 lg:mx-4 rounded-lg text-lg flex-grow'>Confirm</button>
                                 <button className='bg-red-500 py-0.5 mx-1 lg:mx-4 rounded-lg text-lg flex-grow' onClick={() => { setShowCreatePopup(false); setNewPageTitle('') }}>Cancel</button>
@@ -75,10 +75,10 @@ const HomePage = () => {
                     </div> : <></>
                 }
                 <h1 className="text-xl lg:text-2xl text-white">My To-do Lists:</h1>
-                <ul className="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800 flex flex-col">
-                    {pages.map((page, key) => <li className="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300" key={key} ><Link to={'/pages/' + page.id} className="text-lg"> {page.name}</Link></li>)}
+                <ul className="space-y-6 lg:space-y-2 border-l border-zinc-100 dark:border-zinc-800 flex flex-col">
+                    {pages.map((page, key) => <li className="block border-l pl-4 -ml-px border-transparent hover:border-zinc-400 dark:hover:border-zinc-500 text-zinc-700 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300" key={key} ><Link to={'/pages/' + page.id} className="text-lg"> {page.name}</Link></li>)}
                 </ul>
-                <button className="w-max p-3 bg-sky-500 rounded-md font-bold text-white highlight-white/20" onClick={() => { setShowCreatePopup(true) }}>Add a new to-do page</button>
+                <button className="w-max p-3 bg-indigo-500 rounded-md font-bold text-white highlight-white/20" onClick={() => { setShowCreatePopup(true) }}>Add a new to-do page</button>
             </div >
         </div >
     )

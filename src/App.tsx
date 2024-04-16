@@ -12,7 +12,7 @@ function App() {
 
   return (
     <DarkModeContext.Provider value={{ isDarkMode, setDarkMode }}>
-      <div className={(isDarkMode ? 'dark ' : 'dark ') + 'app w-full h-full bg-white dark:bg-slate-900 text-slate-300'}>
+      <div className={(isDarkMode ? 'dark ' : 'dark ') + 'app w-full h-full bg-white dark:bg-zinc-900 text-slate-300'}>
         <Outlet />
       </div>
     </DarkModeContext.Provider>

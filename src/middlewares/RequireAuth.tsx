@@ -46,7 +46,7 @@ const RequireAuth = ({ children }: Props) => {
         return (
             <>
                 <div className='flex items-center justify-center w-full h-full text-black dark:text-white'>
-                    <div className='flex flex-col gap-2 items-center justify-center p-12 bg-slate-500  dark:bg-slate-800 text-base rounded-lg'>
+                    <div className='flex flex-col gap-2 items-center justify-center p-12 bg-zinc-500  dark:bg-zinc-800 text-base rounded-lg'>
                         <h1 className='text-3xl text-black dark:text-white mb-2'>Fetching User...</h1>
                         <div className='border-t-2 border-r-2 animate-spin size-12 rounded-full flex items-center justify-center'>
                         </div>

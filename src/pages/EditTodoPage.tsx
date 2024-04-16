@@ -103,7 +103,7 @@ const EditTodoPage = () => {
         <CurrentFocusProvider>
             <div className="container mx-auto py-6 px-16 lg:px-64 divide-y-2 font-sans">
                 <Header {...{ todo, notifyChange: handleChange, user }} />
-                <div className='text-lg py-4 text-slate-100'>
+                <div className='text-lg py-4 text-zinc-100'>
                     <TodoNodes notifyChange={handleChange} content={todo.content} position='root' />
                 </div>
             </div>
@@ -146,7 +146,7 @@ const Header = ({ todo, notifyChange, user }: { todo: TodoPage, notifyChange: ()
         <div className='w-full flex flex-wrap items-center mb-4'>
             {showDeleteConfirmation ?
                 <div className='absolute left-0 right-0 top-0 bottom-0 bg-black/50 z-50 flex justify-center items-center text-center'>
-                    <div className='bg-slate-800 p-8 flex flex-col rounded-xl'>
+                    <div className='bg-zinc-800 p-8 flex flex-col rounded-xl'>
                         <p className='text-2xl'>Are you sure you want to delete this page?</p>
                         <p className='text-xl text-red-500'>This action is permanent</p>
                         <div className='flex justify-center gap-3 mt-2'>
@@ -167,7 +167,7 @@ const Header = ({ todo, notifyChange, user }: { todo: TodoPage, notifyChange: ()
             }
             {showCreateTemplate ?
                 <div className='absolute left-0 right-0 top-0 bottom-0 bg-black/50 z-50 flex justify-center items-center text-center'>
-                    <div className='bg-slate-800 p-8 flex flex-col rounded-xl'>
+                    <div className='bg-zinc-800 p-8 flex flex-col rounded-xl'>
                         <p className='text-2xl'>Here's the link to your template:</p>
                         <p className='text-xl text-indigo-500'>{templateUrl}</p>
                     </div>
@@ -177,7 +177,7 @@ const Header = ({ todo, notifyChange, user }: { todo: TodoPage, notifyChange: ()
             <Link to='/' className='flex items-stretch mr-4 aspect-square size-4 lg:size-8'><IoArrowBack className='h-full w-full' /></Link>
             <div className=''>
                 <ContentEditable
-                    className=' w-full outline-none bg-slate-900 text-3xl lg:text-5xl text-white font-bold mb-2'
+                    className=' w-full outline-none bg-zinc-900 text-3xl lg:text-5xl text-white font-bold mb-2'
                     onChange={(e) => {
                         todo.name = e.target.value;
                         notifyChange();
@@ -256,7 +256,7 @@ const Todo = ({ node, notifyChange, parentNode, index, position }: { node: TodoN
         allowedTags: ["b", "i"],
     };
 
-    const textColor = !isTodo ? '' : node.checked === 0 ? 'text-white' : node.checked === 0.5 ? 'text-slate-400' : 'text-slate-400 line-through'
+    const textColor = !isTodo ? '' : node.checked === 0 ? 'text-white' : node.checked === 0.5 ? 'text-zinc-400' : 'text-zinc-400 line-through'
     const remove = (index: number) => {
         parentNode.splice(index, 1);
         notifyChange();
@@ -360,7 +360,7 @@ const Todo = ({ node, notifyChange, parentNode, index, position }: { node: TodoN
                         }
                     }}
                     innerRef={inputRef}
-                    className={textColor + ' w-full outline-none bg-slate-900'}
+                    className={textColor + ' w-full outline-none bg-zinc-900'}
                     html={sanitizeHtml(node.content, sanitizeConf)} />
             </div>
             <div className='pl-6'>
